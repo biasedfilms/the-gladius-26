@@ -1,0 +1,42 @@
+{
+  "brand": "The Gladius 26",
+  "direction": "Cinematic Heritage × Modern Editorial",
+  "colors": {
+    "blue-950": "#061A35",
+    "blue-900": "#0A2852",
+    "blue-800": "#0E3670",
+    "blue-700": "#174985",
+    "blue-600": "#245F9F",
+    "gold-500": "#D4A246",
+    "gold-300": "#E7C36E",
+    "silver-400": "#BFC8D4",
+    "silver-200": "#DDE2E9",
+    "silver-100": "#F0F3F7",
+    "ink": "#152033",
+    "black": "#03070D",
+    "white": "#F8FAFC"
+  },
+  "typography": {
+    "display_candidates": [
+      "Bodoni Moda",
+      "Cormorant Garamond"
+    ],
+    "body_candidates": [
+      "Manrope",
+      "DM Sans"
+    ],
+    "metadata_candidate": "IBM Plex Mono",
+    "selection_rule": "Choose one display and one body family after testing real compositions; avoid loading unnecessary weights."
+  },
+  "layout": {
+    "content_max_px": 1280,
+    "mobile_gutter_px": "20-24",
+    "desktop_gutter_px": "48-80",
+    "paragraph_measure_chars": "60-75"
+  },
+  "motion": {
+    "signature": "Hero sequence: oversized title reveal, separate 26 marker, Gladius emblem, institutional lockup",
+    "easing": "cubic-bezier(0.22, 1, 0.36, 1)",
+    "respect_reduced_motion": true
+  }
+}

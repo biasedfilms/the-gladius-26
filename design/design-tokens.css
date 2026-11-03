@@ -1,0 +1,83 @@
+/* The Gladius 26 — design tokens */
+:root {
+  color-scheme: light;
+
+  /* Visible royal navy: the primary brand surface should read as blue. */
+  --gladius-blue-950: #061A35;
+  --gladius-blue-900: #0A2852;
+  --gladius-blue-800: #0E3670;
+  --gladius-blue-700: #174985;
+  --gladius-blue-600: #245F9F;
+
+  --gladius-gold-500: #D4A246;
+  --gladius-gold-300: #E7C36E;
+
+  --gladius-silver-400: #BFC8D4;
+  --gladius-silver-200: #DDE2E9;
+  --gladius-silver-100: #F0F3F7;
+
+  --gladius-ink: #152033;
+  --gladius-black: #03070D;
+  --gladius-white: #F8FAFC;
+
+  --color-background-primary: var(--gladius-blue-800);
+  --color-background-secondary: var(--gladius-blue-700);
+  --color-background-deep: var(--gladius-blue-950);
+  --color-background-silver: var(--gladius-silver-200);
+  --color-background-light: var(--gladius-silver-100);
+
+  --color-text-on-blue: var(--gladius-white);
+  --color-text-on-silver: var(--gladius-ink);
+  --color-accent: var(--gladius-gold-500);
+  --color-accent-bright: var(--gladius-gold-300);
+  --color-border-on-blue: rgb(221 226 233 / 28%);
+  --color-border-on-silver: rgb(21 32 51 / 20%);
+
+  --font-display: "Bodoni Moda", "Cormorant Garamond", Georgia, serif;
+  --font-body: "Manrope", "DM Sans", Arial, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+
+  --content-max: 1280px;
+  --page-gutter: clamp(1.25rem, 4vw, 5rem);
+  --section-space: clamp(5rem, 11vw, 10rem);
+
+  --ease-cinematic: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-fast: 180ms;
+  --duration-medium: 520ms;
+  --duration-cinematic: 900ms;
+}
+
+/* Recommended default section surfaces */
+.surface-blue {
+  color: var(--color-text-on-blue);
+  background: var(--color-background-primary);
+}
+
+.surface-blue-alt {
+  color: var(--color-text-on-blue);
+  background: var(--color-background-secondary);
+}
+
+.surface-deep {
+  color: var(--color-text-on-blue);
+  background: var(--color-background-deep);
+}
+
+.surface-silver {
+  color: var(--color-text-on-silver);
+  background: var(--color-background-silver);
+}
+
+.surface-light {
+  color: var(--color-text-on-silver);
+  background: var(--color-background-light);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    scroll-behavior: auto;
+    --duration-fast: 1ms;
+    --duration-medium: 1ms;
+    --duration-cinematic: 1ms;
+  }
+}

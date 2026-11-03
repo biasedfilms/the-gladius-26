@@ -1,0 +1,31 @@
+{
+  "assets": [
+    {
+      "file": "the-gladius-logo.png",
+      "width": 2048,
+      "height": 2041,
+      "format": "PNG",
+      "mode": "RGBA",
+      "has_transparent_pixels": true,
+      "sha256": "46878849387cb583f54cf4252141ae47124fa0e3f7b64b0c28332b3a770867a0"
+    },
+    {
+      "file": "university-logo.png",
+      "width": 220,
+      "height": 220,
+      "format": "PNG",
+      "mode": "RGBA",
+      "has_transparent_pixels": true,
+      "sha256": "57eb3f9d57205767935f935868de1ed99c74f8f17df3a0132daacdc4b531cf78"
+    },
+    {
+      "file": "faculty-logo.png",
+      "width": 1378,
+      "height": 1962,
+      "format": "PNG",
+      "mode": "RGBA",
+      "has_transparent_pixels": true,
+      "sha256": "000bdac01971feba46a0bce828b1ea3650ccb513699664edc2a397a465e1cb21"
+    }
+  ]
+}
