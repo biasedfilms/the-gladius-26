@@ -10,6 +10,6 @@ export const meaning = {
     "Nama Gladius merujuk pada pedang yang menjadi bagian dari identitas seorang Gladiator.",
     "Karena The Gladius merupakan anak dari The Gladiators, nama Gladius dipilih sebagai representasi dari pedang milik para Gladiator.",
     "Nama tersebut menjadi simbol hubungan antara generasi yang melahirkan dan generasi yang dilahirkan.",
-    "Kami tidak hanya dilahrikan, tetapi juga ditempa oleh The Gladiators 23 sebagai pedang tajam yang kuat, teguh dan berani.",
+    "Kami tidak hanya dilahirkan, tetapi juga ditempa oleh The Gladiators 23 sebagai pedang tajam yang kuat, teguh dan berani.",
   ],
 } as const;
