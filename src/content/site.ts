@@ -8,7 +8,7 @@ export const site = {
   university: "Universitas Katolik De La Salle Manado",
   tagline: "Forged in Diversity, United in Engineering.",
   description:
-    "The Gladius 26 merupakan kolektif mahasiswa Fakultas Teknik Universitas Katolik De La Salle Manado angkatan 2026. Sebuah arsip identitas: asal-usul, makna nama, dan lambang kami.",
+    "Arsip Digital dari Angkatan 2026 Fakultas Teknik, Universitas Katolik De La Salle Manado.",
 } as const;
 
 /**
