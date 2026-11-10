@@ -1,0 +1,496 @@
+.bench {
+  --focus-ring: var(--color-gold-pale);
+  --link-rule: var(--color-gold-pale);
+  --link-rule-text: var(--color-navy);
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
+  background: var(--color-royal-alt);
+  color: var(--color-white);
+}
+
+.light {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    var(--dither),
+    radial-gradient(circle at 50% 30%, var(--color-azure) 0%, rgb(36 95 159 / 0%) 62%);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(2.5rem, 7vw, 3.5rem);
+  padding-block: clamp(3.75rem, 9vw, 7rem);
+}
+
+/* Emblem ------------------------------------------------------------------ */
+
+.stage {
+  position: relative;
+  aspect-ratio: 2048 / 2041;
+  width: min(84%, 30rem);
+  margin-inline: auto;
+}
+
+.base,
+.spot {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/*
+ * The rest of the emblem falls into shadow while one element is lit. Darkening,
+ * not fading: a fade would turn the black disc blue, and the edge of the
+ * spotlight would show as a dark shape around each element.
+ */
+.base {
+  filter: brightness(0.46) saturate(0.72);
+}
+
+/* The static page has no spotlight to move, so the mark is shown untouched. */
+:global(html:not([data-motion])) .base {
+  filter: none;
+}
+
+.spot {
+  opacity: 0;
+  mask-size: 100% 100%;
+  -webkit-mask-size: 100% 100%;
+  transition: opacity 480ms var(--ease-cinematic);
+}
+
+.spot[data-on="true"] {
+  opacity: 1;
+}
+
+/* First sight: the bench starts dark, then the first part is lit and called out. */
+@media (prefers-reduced-motion: no-preference) {
+  :global(html[data-motion="ready"]) [data-pending] .spot {
+    opacity: 0;
+  }
+}
+
+.ring {
+  color: var(--color-gold-pale);
+}
+
+.tick {
+  opacity: 0.22;
+  transition: opacity 260ms ease;
+}
+
+.stage[data-lit="gear"] .tick {
+  opacity: 1;
+  transition-delay: calc(var(--tick) * 42ms);
+}
+
+.hit {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.hit path {
+  fill: transparent;
+  cursor: pointer;
+  pointer-events: all;
+}
+
+/* Callouts ---------------------------------------------------------------- */
+
+.callout {
+  cursor: pointer;
+  transition: opacity 600ms ease calc(var(--order) * 110ms);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  :global(html[data-motion="ready"]) [data-pending] .callout {
+    opacity: 0;
+  }
+
+  :global(html[data-motion="ready"]) [data-pending] .callout .leader {
+    stroke-dashoffset: 1;
+  }
+
+  :global(html[data-motion="ready"]) [data-pending] .callout .anchor {
+    opacity: 0;
+  }
+}
+
+.leader {
+  fill: none;
+  stroke: var(--color-gold-pale);
+  stroke-width: 5;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  pointer-events: none;
+  transition: stroke-dashoffset 220ms ease;
+}
+
+.callout[data-on="true"] .leader {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 620ms cubic-bezier(0.65, 0, 0.35, 1) 60ms;
+}
+
+.anchor {
+  fill: var(--color-gold-pale);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 180ms ease;
+}
+
+.callout[data-on="true"] .anchor {
+  opacity: 1;
+  transition: opacity 240ms ease 560ms;
+}
+
+.balloon {
+  fill: var(--color-royal-alt);
+  stroke: var(--color-gold-pale);
+  stroke-width: 5;
+  pointer-events: all;
+  transition:
+    fill 260ms ease,
+    stroke 260ms ease;
+}
+
+/* Mono, as drawing numbers are: Bodoni's hairlines would turn a 4 into a 1 here. */
+.balloonNumber {
+  fill: var(--color-white);
+  font-family: var(--font-mono);
+  font-size: 76px;
+  font-weight: 500;
+  dominant-baseline: central;
+  pointer-events: none;
+  text-anchor: middle;
+  transition: fill 260ms ease;
+}
+
+.callout[data-on="true"] .balloon {
+  fill: var(--color-gold-pale);
+  stroke: var(--color-gold-pale);
+}
+
+.callout[data-on="true"] .balloonNumber {
+  fill: var(--color-navy);
+}
+
+/* Tabs: the part list ------------------------------------------------------ */
+
+.tablist {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  border-bottom: 1px solid rgb(248 250 252 / 22%);
+}
+
+/* One marker travels between the parts, so the eye follows the change. */
+.tablist::after {
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 20%;
+  height: 2px;
+  background: var(--color-gold);
+  pointer-events: none;
+  transform: translateX(calc(var(--index) * 100%));
+  transition: transform 620ms var(--ease-cinematic);
+  content: "";
+}
+
+.tab {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25rem;
+  min-height: 3.75rem;
+  padding: 0.5rem 0.25rem 0.75rem 0;
+  color: var(--color-silver-200);
+  text-align: left;
+  cursor: pointer;
+  transition: color 180ms ease;
+}
+
+.tab[aria-selected="true"] {
+  color: var(--color-white);
+}
+
+.tabNumber {
+  font-family: var(--font-mono);
+  font-size: 1.125rem;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.tabName {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+}
+
+.tabCategory {
+  display: none;
+}
+
+@media (hover: hover) {
+  .tab:hover {
+    color: var(--color-white);
+  }
+}
+
+/* Explanation ------------------------------------------------------------- */
+
+.panels {
+  position: relative;
+  display: grid;
+  margin-top: 1.75rem;
+}
+
+.panel {
+  grid-area: 1 / 1;
+  visibility: hidden;
+  opacity: 0;
+  transition:
+    opacity 180ms ease,
+    visibility 0s linear 180ms;
+}
+
+.panel[data-on="true"] {
+  visibility: visible;
+  opacity: 1;
+  transition: visibility 0s;
+}
+
+.panelTitle {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 0.875rem;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2.75rem, 12vw, 4.75rem);
+  font-variation-settings: "opsz" 30;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1;
+}
+
+/* The name rises, its category follows, then the text: hierarchy, in time. */
+.panelMask {
+  display: block;
+  overflow: hidden;
+  padding-block: 0.08em;
+  margin-block: -0.08em;
+}
+
+.panelName {
+  display: block;
+  transform: translateY(108%);
+  transition: transform 200ms ease;
+}
+
+.panel[data-on="true"] .panelName {
+  transform: none;
+  transition: transform 760ms var(--ease-cinematic) 60ms;
+}
+
+.category {
+  color: var(--color-gold-pale);
+  opacity: 0;
+  transition: opacity 160ms ease;
+}
+
+.panel[data-on="true"] .category {
+  opacity: 1;
+  transition: opacity 460ms ease 260ms;
+}
+
+.meaning {
+  max-width: 34rem;
+  margin: 1rem 0 0;
+  font-size: clamp(1.0625rem, 2vw, 1.1875rem);
+  line-height: 1.7;
+  opacity: 0;
+  transform: translateY(0.5rem);
+  transition:
+    opacity 160ms ease,
+    transform 160ms ease;
+}
+
+.panel[data-on="true"] .meaning {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 520ms var(--ease-cinematic) 180ms,
+    transform 620ms var(--ease-cinematic) 180ms;
+}
+
+/* Narrow: the cell follows the selected explanation. Set by the component. */
+@media (max-width: 1023px) {
+  .panels {
+    height: var(--panel-height, auto);
+    overflow: clip;
+    transition: height 560ms var(--ease-cinematic);
+  }
+
+  .panel {
+    align-self: start;
+  }
+}
+
+.count {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin: 1.25rem 0 0;
+  color: var(--color-gold-pale);
+}
+
+.countValue {
+  min-width: 2ch;
+  color: var(--color-white);
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-variation-settings: "opsz" 18;
+  font-weight: 500;
+  font-variant-numeric: lining-nums tabular-nums;
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+/* Wide: the bench fills the screen, emblem left, label right. ------------- */
+
+@media (min-width: 1024px) {
+  .light {
+    background:
+      var(--dither),
+      radial-gradient(circle at 29% 50%, var(--color-azure) 0%, rgb(36 95 159 / 0%) 52%);
+  }
+
+  .layout {
+    grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr);
+    align-items: center;
+    gap: clamp(3rem, 6vw, 6rem);
+    min-height: min(100svh, 62rem);
+    padding-block: clamp(4rem, 8svh, 6rem);
+  }
+
+  /* Stays in view beside a long meaning, leaving the callouts room above it. */
+  .stage {
+    position: sticky;
+    top: calc(var(--header-height) + 3.5rem);
+    align-self: start;
+    width: min(92%, calc(100svh - 12rem), 36rem);
+    margin-block: 2rem;
+  }
+
+  .tablist {
+    grid-template-columns: minmax(0, 1fr);
+    border-top: 1px solid rgb(248 250 252 / 22%);
+    border-bottom: 0;
+  }
+
+  .tablist::after {
+    top: 0;
+    bottom: auto;
+    width: 100%;
+    height: 20%;
+    background: none;
+    border-bottom: 2px solid var(--color-gold);
+    transform: translateY(calc(var(--index) * 100%));
+  }
+
+  .tab {
+    flex-direction: row;
+    align-items: center;
+    gap: 1.25rem;
+    min-height: 3.25rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgb(248 250 252 / 22%);
+  }
+
+  .tabNumber {
+    width: 1.25rem;
+    font-size: 0.9375rem;
+    transition: transform 420ms var(--ease-cinematic);
+  }
+
+  .tabName {
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
+  .tabCategory {
+    display: block;
+    margin-left: auto;
+    color: var(--color-gold-pale);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .panels {
+    margin-top: 2.25rem;
+  }
+}
+
+@media (min-width: 1024px) and (hover: hover) {
+  .tab:hover .tabNumber {
+    transform: translateX(0.25rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spot,
+  .tick,
+  .callout,
+  .leader,
+  .callout[data-on="true"] .leader,
+  .anchor,
+  .callout[data-on="true"] .anchor,
+  .tablist::after,
+  .panels,
+  .panel,
+  .panel[data-on="true"],
+  .panelName,
+  .panel[data-on="true"] .panelName,
+  .category,
+  .panel[data-on="true"] .category,
+  .meaning,
+  .panel[data-on="true"] .meaning {
+    transition: none;
+  }
+
+  .panelName,
+  .meaning {
+    transform: none;
+  }
+
+  .stage[data-lit="gear"] .tick {
+    transition-delay: 0ms;
+  }
+}
+
+/* The static page lists all five meanings, so each must simply be shown. */
+:global(html:not([data-motion])) .panels {
+  height: auto;
+  overflow: visible;
+}
+
+:global(html:not([data-motion])) .panelName,
+:global(html:not([data-motion])) .category,
+:global(html:not([data-motion])) .meaning {
+  opacity: 1;
+  transform: none;
+}

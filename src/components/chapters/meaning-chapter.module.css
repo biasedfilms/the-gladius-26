@@ -1,0 +1,35 @@
+.clauses {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.75rem;
+  margin: clamp(2.5rem, 6vw, 4.5rem) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.clause {
+  padding-top: 0.875rem;
+  border-top: 1px solid rgb(248 250 252 / 26%);
+}
+
+.clause p {
+  margin: 0.75rem 0 0;
+}
+
+.number {
+  color: var(--color-gold-pale);
+}
+
+@media (min-width: 700px) {
+  .clauses {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2.5rem 2rem;
+  }
+}
+
+/* Four clauses on the page's twelve columns: three columns each. */
+@media (min-width: 1180px) {
+  .clauses {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}

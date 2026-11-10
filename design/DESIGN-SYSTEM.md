@@ -28,7 +28,9 @@ Keep source PNGs untouched. Maintain aspect ratio and transparency. Do not recol
 
 ## Typography
 
-Start by testing one display serif (Bodoni Moda or Cormorant Garamond) and one modern sans (Manrope or DM Sans). Select one from each category after seeing actual page compositions. A mono typeface may be used sparingly for dates/technical metadata. Avoid automatically choosing Inter/Roboto or loading excessive font weights.
+- Display: **Bodoni Moda**, chosen over Cormorant Garamond after testing in the hero composition.
+- Text and UI: **Manrope**.
+- **IBM Plex Mono**, one weight, only for chapter markers and measured annotations.
 
 ## Layout rules
 
@@ -45,12 +47,10 @@ Start by testing one display serif (Bodoni Moda or Cormorant Garamond) and one m
 
 The hero is the one primary cinematic moment: oversized title reveal → separate `26` edition marker → Gladius emblem reveal → university/faculty affiliation lockup. Keep it short and skippable. Other motion should be sparse and narrative-led.
 
-## Avoid
+## Left out on purpose
 
-- Purple gradients, neon, generic technology stock imagery.
-- Circuit-board patterns unrelated to actual content.
-- Excessive glassmorphism or floating cards.
-- Identical rounded cards for every section.
+- Circuit boards, HUDs and other technology motifs unrelated to the content.
+- Identical cards for every section.
 - Constant background motion or parallax everywhere.
 - Decorative fake Latin or unsupported heritage claims.
 - Repeated fade-up on every element.

@@ -1,74 +1,105 @@
-# The Gladius 26 — Website Build Kit
+<div align="center">
 
-A Claude Code-ready project kit for building the **The Gladius 26 Digital Identity Archive**.
+<img src="public/images/brand/the-gladius-logo.png" alt="The Gladius emblem" width="180">
 
-**Art direction:** Cinematic Heritage × Modern Editorial  
-**Palette:** Visible royal navy, metallic gold, silver, and controlled deep-navy contrast  
-**Hero:** Oversized THE GLADIUS typography, separate 26 edition marker, official emblem  
-**Language:** Bahasa Indonesia
+# The Gladius 26
 
-## What's included
+**Digital Identity Archive**<br>
+Fakultas Teknik · Universitas Katolik De La Salle Manado
+
+<sub><i>Rise As One!</i></sub>
+
+<br>
+
+[![Next.js](https://img.shields.io/badge/Next.js-16-0E3670?style=flat-square&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-19-0E3670?style=flat-square&logo=react&logoColor=white)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-0E3670?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-0E3670?style=flat-square&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![Motion](https://img.shields.io/badge/Motion-14-0E3670?style=flat-square)](https://motion.dev/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-D4A246?style=flat-square)](LICENSE)
+
+[Instagram](https://www.instagram.com/thegladius_26/) · [The Gladiators 23](https://www.instagram.com/thegladiators_23/) · [Universitas Katolik De La Salle Manado](https://unikadelasalle.ac.id/)
+
+</div>
+
+<br>
+
+## About
+
+The digital identity archive of **The Gladius 26**, the 2026 Faculty of Engineering collective at Universitas Katolik De La Salle Manado, born from The Gladiators 23.
+
+A single page, written in Bahasa Indonesia, records who The Gladius are, which generation they were born from, where the name comes from, and what each part of the official emblem means. It is told in four chapters:
+
+| | Section | Subject |
+|:---:|---|---|
+| **I** | Identitas | Who The Gladius 26 are |
+| **II** | Asal-usul | Their lineage from The Gladiators 23 |
+| **III** | Makna | Why the name Gladius was chosen |
+| **IV** | Lambang | The five elements of the emblem: Pedang, Helm, Rantai, Perisai and Roda Gear |
+
+## Design
+
+The art direction is **Cinematic Heritage × Modern Editorial**: a visible royal-blue foundation, alternating silver chapters, restrained metallic gold and oversized editorial type. The official emblem is the centrepiece. The university and faculty marks appear as supporting affiliations, in their original colours.
+
+| Colour | Role |
+|---|---|
+| ![#0E3670](https://img.shields.io/badge/%230E3670-0E3670?style=flat-square) | Royal blue, main surface |
+| ![#01204D](https://img.shields.io/badge/%2301204D-01204D?style=flat-square) | Deep navy, lineage chapter and footer |
+| ![#DDE2E9](https://img.shields.io/badge/%23DDE2E9-DDE2E9?style=flat-square) | Silver, alternate chapters |
+| ![#D4A246](https://img.shields.io/badge/%23D4A246-D4A246?style=flat-square) | Gold, accents only |
+
+The emblem's gear carries 26 teeth, and the site takes its measurements from them: the reading-progress dial in the header lights the 26 teeth one by one. Motion is kept to one hero sequence and a few chapter transitions, and it stands down when the visitor prefers reduced motion.
+
+Design decisions, palette reasoning and rejected ideas are recorded in [`design/BLUEPRINT.md`](design/BLUEPRINT.md). Colour tokens and brand rules are in [`design/DESIGN-SYSTEM.md`](design/DESIGN-SYSTEM.md).
+
+## Structure 
+
+<details>
+<summary><b>Project structure</b></summary>
+
+<br>
 
 ```text
-.
-├── README.md
-├── PRD.md
-├── MASTER-PROMPT.md
-├── CLAUDE.md
-├── CONTENT-AND-FACTS.md
-├── assets/brand/
-│   ├── the-gladius-logo.png
-│   ├── university-logo.png
-│   ├── faculty-logo.png
-│   └── ASSET-GUIDE.md
-├── design/
-│   ├── DESIGN-SYSTEM.md
-│   ├── design-tokens.css
-│   └── design-tokens.json
-├── references/
-│   └── SKILL-REFERENCES.md
-└── .claude/skills/
-    ├── frontend-design/SKILL.md
-    ├── brand-system/SKILL.md
-    ├── cinematic-motion/SKILL.md
-    ├── content-integrity/SKILL.md
-    ├── no-ai-slop/SKILL.md
-    ├── responsive-accessibility/SKILL.md
-    └── visual-qa/SKILL.md
+src/
+├── app/                       Page shell, tokens (globals.css), metadata images
+├── content/                   All copy, typed, kept apart from the components
+│   ├── site.ts                Names, navigation, logos, official links, credits
+│   ├── identity.ts            Bab I
+│   ├── origins.ts             Bab II
+│   ├── meaning.ts             Bab III
+│   ├── emblem.ts              Bab IV and the five element meanings
+│   └── closing.ts             Closing and signature
+├── components/
+│   ├── navigation/            Header, mobile menu, 26-tooth progress dial
+│   ├── hero/                  Hero and its keyframe sequence
+│   ├── chapters/              The chapters, lineage strands, drawn blade
+│   ├── emblem/                Emblem explorer, calibration, 26-tick ring and rack
+│   ├── institutional-lockup/  University and faculty marks
+│   ├── links/                 External links, and names made clickable in copy
+│   ├── motion/                Headlines, gold rule, dimension line, grid, curtain, reveal
+│   └── footer/                Institutions, profiles, copyright, credit
+└── lib/metadata.ts            SEO and social metadata
+
+public/images/brand/           Byte-identical copies of the three official marks
+assets/brand/                  Original brand files and their manifest
+design/                        Design system, tokens and blueprint
+test/integrity.test.ts         Guards the logos, links and credit
 ```
 
-## How to use with Claude Code
+</details>
 
-1. Extract this ZIP.
-2. Copy the contents of the `the-gladius-26-build-kit` folder into the root of your existing website repository. Keep `.claude/skills/` at the repository root.
-3. Keep `assets/brand/` as the source archive. During implementation, Claude should copy the three files into the app's public image directory without altering the originals.
-4. Open the project in Claude Code.
-5. Open `MASTER-PROMPT.md` and paste its full contents into Claude Code, or ask Claude Code to read and execute that file.
-6. Claude Code can discover project skills from `.claude/skills/`. You can also invoke a skill explicitly, for example `/frontend-design`, `/cinematic-motion`, or `/visual-qa`.
+## License
 
-The skills are original, project-specific instructions authored for this build kit. They use Anthropic's documented `SKILL.md` directory/frontmatter conventions and draw on official design, motion, accessibility, and Next.js documentation. They are not copied verbatim from Anthropic's reference skill.
+The source code is released under the [MIT License](LICENSE), © 2026 The Gladius 26.
 
-## If you use Claude.ai rather than Claude Code
+The license does not cover the brand marks. The Gladius emblem, the Universitas Katolik De La Salle Manado logo and the Fakultas Teknik artwork belong to their respective owners and are not licensed for reuse.
 
-The `.claude/skills/` layout is intended for Claude Code project-level skills. Claude.ai's custom Skills upload workflow is separate; use Anthropic's current help documentation for its upload requirements. Do not assume this whole project kit ZIP is itself a single Claude.ai skill.
+<br>
 
-## Brand asset notes
+<div align="center">
 
-- The Gladius emblem: 2048 × 2041 PNG.
-- University logo: 220 × 220 PNG.
-- Faculty identity artwork: 1378 × 1962 PNG.
-- All three supplied assets are RGBA PNGs with transparency.
-- Preserve every original; no recoloring, distortion, or generative recreation.
-- The university and faculty marks keep their own original colors and remain subordinate to The Gladius emblem.
+---
 
-## Key design decision
+<sub>Website by <b>Mikael Kalesaran</b> for The Gladius 26<br>Fakultas Teknik · Universitas Katolik De La Salle Manado</sub>
 
-The website uses a **more visible royal navy** (primary surface `#0E3670`) rather than allowing the deep navy to become almost black. Darker navy is used only for contrast. Silver sections create visual breathing room; gold is reserved for accents.
-
-## Scope
-
-The first release is a static, single-page digital autobiography. It does not need authentication, a database, a CMS, an admin area, or social features.
-
-## Start here
-
-Read `PRD.md` for the full product and visual specification, then execute `MASTER-PROMPT.md`.
+</div>

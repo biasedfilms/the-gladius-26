@@ -1,0 +1,172 @@
+.footer {
+  position: relative;
+  z-index: 10;
+  background: var(--color-navy);
+  color: var(--color-white);
+}
+
+.body {
+  padding-top: clamp(3rem, 6vw, 4.5rem);
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2.75rem;
+  padding-block: clamp(2.25rem, 5vw, 3.5rem) clamp(2.75rem, 6vw, 4.5rem);
+}
+
+/* A title block labels each field in small capitals, above what it holds. */
+.field {
+  margin: 0 0 1.5rem;
+  color: var(--color-gold-pale);
+}
+
+.lockup {
+  align-items: flex-start;
+}
+
+.profiles ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid rgb(248 250 252 / 20%);
+}
+
+.profiles li {
+  border-bottom: 1px solid rgb(248 250 252 / 20%);
+}
+
+.profile {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.125rem 1.5rem;
+  min-height: 2.75rem;
+  padding-block: 0.75rem;
+  color: inherit;
+  text-decoration: none;
+}
+
+.profileName {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.4vw, 1.75rem);
+  font-variation-settings: "opsz" 20;
+  font-weight: 500;
+  line-height: 1.15;
+  transition: color 180ms ease;
+}
+
+.handle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--color-silver-200);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: none;
+}
+
+/* Copyright and credit are two entries, in two faces, in two cells. */
+.band {
+  background: var(--color-deep);
+}
+
+.signoff {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1rem;
+  padding-block: 1.75rem;
+}
+
+.signoff p {
+  margin: 0;
+}
+
+.copyright {
+  color: var(--color-silver-200);
+  letter-spacing: 0.08em;
+  text-transform: none;
+}
+
+.creator {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-style: italic;
+  font-variation-settings: "opsz" 14;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.top {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 2.75rem;
+  color: var(--color-silver-200);
+  text-decoration: none;
+  transition: color 180ms ease;
+}
+
+.topPoint {
+  width: 0.375rem;
+  height: 0.375rem;
+  background: var(--color-gold);
+  transform: rotate(45deg);
+  transition: transform 420ms var(--ease-cinematic);
+}
+
+@media (hover: hover) {
+  .profile:hover .profileName {
+    color: var(--color-gold-pale);
+  }
+
+  .profile:hover :global(.external-arrow) {
+    transform: translate(2px, -2px);
+  }
+
+  .top:hover {
+    color: var(--color-white);
+  }
+
+  .top:hover .topPoint {
+    transform: translateY(-4px) rotate(45deg);
+  }
+}
+
+@media (min-width: 1024px) {
+  .columns {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: 2rem;
+  }
+
+  .institutions {
+    grid-column: span 7;
+  }
+
+  .profiles {
+    grid-column: 9 / span 4;
+  }
+
+  .signoff {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: 2rem;
+    align-items: center;
+    padding-block: 1rem;
+  }
+
+  .copyright {
+    grid-column: span 5;
+  }
+
+  .creator {
+    grid-column: 6 / span 3;
+    white-space: nowrap;
+  }
+
+  .top {
+    grid-column: 9 / span 4;
+    justify-self: end;
+  }
+}

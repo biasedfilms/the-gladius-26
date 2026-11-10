@@ -1,0 +1,135 @@
+/* A hairline where the blue bench ends and the final blue begins. */
+.closing {
+  position: relative;
+  border-top: 1px solid var(--color-gold);
+  isolation: isolate;
+  overflow: clip;
+  background: var(--color-royal);
+  color: var(--color-white);
+  text-align: center;
+}
+
+.light {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    var(--dither),
+    radial-gradient(
+      circle at 50% clamp(13rem, 24vw, 19rem),
+      var(--color-azure) 0%,
+      rgb(36 95 159 / 0%) clamp(20rem, 42vw, 40rem)
+    );
+}
+
+.inner {
+  container-type: inline-size;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-block: var(--section-space) clamp(3.5rem, 7vw, 5.5rem);
+}
+
+.emblem {
+  position: relative;
+  aspect-ratio: 2048 / 2041;
+  width: min(60cqw, 24rem);
+}
+
+.pitch {
+  color: var(--color-gold-pale);
+}
+
+.pitchCircle {
+  opacity: 0.42;
+  stroke-dasharray: 1;
+  transition: stroke-dashoffset 1040ms linear;
+}
+
+/* Below, the same compass and the same 26 teeth as the hero: the page closes on its opening. */
+.mark {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition:
+    opacity 1100ms var(--ease-cinematic) 320ms,
+    filter 1500ms var(--ease-cinematic) 320ms,
+    transform 1500ms var(--ease-cinematic) 320ms;
+}
+
+.ring {
+  color: var(--color-gold-pale);
+}
+
+.tick {
+  opacity: 0.8;
+  transition: opacity 300ms ease-out calc(var(--tick) * 40ms);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  :global(html[data-motion="ready"]) .emblem[data-pending] .pitchCircle {
+    stroke-dashoffset: 1;
+  }
+
+  :global(html[data-motion="ready"]) .emblem[data-pending] .mark {
+    opacity: 0;
+    filter: brightness(0.2);
+    transform: scale(0.975);
+  }
+
+  :global(html[data-motion="ready"]) .emblem[data-pending] .tick {
+    opacity: 0;
+  }
+}
+
+/* Set to the full measure: the last headline on the page is its widest. */
+.headline {
+  width: 100%;
+  margin: clamp(3rem, 7cqw, 5rem) 0 0;
+  font-family: var(--font-display);
+  font-size: calc(100cqw / 7.4);
+  font-variation-settings: "opsz" 40;
+  font-weight: 600;
+  letter-spacing: -0.012em;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+
+.lines {
+  margin-top: clamp(1.75rem, 4cqw, 3rem);
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 5.8cqw, 2.25rem);
+  font-style: italic;
+  font-variation-settings: "opsz" 14;
+  font-weight: 500;
+  line-height: 1.34;
+}
+
+.lines p {
+  margin: 0;
+}
+
+.point {
+  width: 0.5rem;
+  height: 0.5rem;
+  margin-top: clamp(2.25rem, 5cqw, 3.5rem);
+  background: var(--color-gold);
+  transform: rotate(45deg);
+}
+
+.signature {
+  max-width: 44rem;
+  margin: 1.5rem 0 0;
+  color: var(--color-silver-200);
+  text-wrap: balance;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pitchCircle,
+  .mark,
+  .tick {
+    transition: none;
+  }
+}

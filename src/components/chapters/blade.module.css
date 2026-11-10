@@ -1,0 +1,98 @@
+.track {
+  --blade-height: clamp(6.5rem, 21vw, 19rem);
+  --tip: calc(var(--blade-height) * 1.5);
+  --guard-height: calc(var(--blade-height) * 1.34);
+  position: relative;
+  height: var(--guard-height);
+  will-change: transform;
+}
+
+.sword {
+  position: absolute;
+  inset-block: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  width: calc(100vw - var(--gutter) * 0.5);
+}
+
+.guard {
+  flex: none;
+  width: clamp(0.625rem, 1.3vw, 1.25rem);
+  height: 100%;
+  margin-left: calc(var(--gutter) * 0.45);
+  background: var(--color-gold);
+  clip-path: polygon(0 3%, 50% 0, 100% 3%, 100% 97%, 50% 100%, 0 97%);
+}
+
+.blade,
+.face {
+  --edge: polygon(
+    0 0,
+    calc(100% - var(--tip)) 0,
+    100% 50%,
+    calc(100% - var(--tip)) 100%,
+    0 100%
+  );
+  clip-path: var(--edge);
+}
+
+/* The sharpened edge: light above the ridge, shadow below. */
+.blade {
+  position: relative;
+  flex: 1;
+  height: var(--blade-height);
+  background: linear-gradient(
+    180deg,
+    var(--color-silver-100) 0 50%,
+    var(--color-steel) 50% 100%
+  );
+}
+
+.face {
+  position: absolute;
+  inset: 7% 4.5% 7% 0;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(
+    180deg,
+    var(--color-silver-200) 0 50%,
+    var(--color-silver) 50% 100%
+  );
+}
+
+.glint {
+  position: absolute;
+  inset-block: 0;
+  left: 0;
+  width: 18%;
+  background: linear-gradient(
+    102deg,
+    rgb(248 250 252 / 0%) 20%,
+    rgb(248 250 252 / 85%) 50%,
+    rgb(248 250 252 / 0%) 80%
+  );
+}
+
+.name {
+  position: relative;
+  padding-left: clamp(1.25rem, 3.5vw, 3.5rem);
+  color: var(--color-ink);
+  font-family: var(--font-display);
+  font-size: min(calc(var(--blade-height) * 0.72), 13.2vw);
+  font-variation-settings: "opsz" 40;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  line-height: 1;
+}
+
+/* In CSS, not a hook: the server has already written the inline transform. */
+@media (prefers-reduced-motion: reduce) {
+  .sword {
+    transform: none !important;
+  }
+
+  .glint {
+    display: none;
+  }
+}

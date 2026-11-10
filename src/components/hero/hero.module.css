@@ -1,0 +1,621 @@
+/*
+ * The hero's sequence runs on CSS keyframes, so it plays from the server-rendered
+ * HTML with no wait for hydration, no intro gate, and exactly once per page load.
+ *
+ * It is staged as a drawing being made. The datum line is ruled, the title stands
+ * up on it, a compass sets the gear's circle and its 26 teeth, and only then does
+ * light reach the emblem. Everything can be read within the first second and the
+ * whole sequence ends by 2.5 s; design/BLUEPRINT.md has the timing table.
+ */
+
+.hero {
+  /* One turn of the compass: 40 ms per tooth, so pen and ticks stay in step. */
+  --pen-start: 560ms;
+  --pen-turn: 1040ms;
+  position: relative;
+  z-index: 0;
+  isolation: isolate;
+  min-height: 100svh;
+  overflow: clip;
+  background: var(--color-royal);
+  color: var(--color-white);
+}
+
+/* Light from behind the emblem. It separates the dark gear from the blue field. */
+.light {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    var(--dither),
+    radial-gradient(
+      circle at var(--light-x, 50%) var(--light-y, 56%),
+      var(--color-azure) 0%,
+      rgb(36 95 159 / 62%) 24%,
+      rgb(36 95 159 / 0%) 62%
+    ),
+    linear-gradient(180deg, rgb(10 40 82 / 0%) 62%, rgb(10 40 82 / 62%) 100%);
+  animation: light-up 1700ms var(--ease-cinematic) 500ms both;
+}
+
+.stage {
+  container-type: inline-size;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    "title"
+    "rule"
+    "emblem"
+    "foot";
+  min-height: 100svh;
+  padding: calc(var(--header-height) + clamp(1rem, 3svh, 2rem)) var(--gutter)
+    clamp(1.5rem, 3.5svh, 2.5rem);
+  transform-origin: 50% 30%;
+}
+
+/* Title ------------------------------------------------------------------- */
+
+.title {
+  --t: min(calc(100cqw / 4.56), 36svh);
+  position: relative;
+  grid-area: title;
+  display: block;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--t);
+  font-variation-settings: "opsz" 34;
+  font-weight: 600;
+  line-height: 0.82;
+  white-space: nowrap;
+  z-index: 1;
+  transform: translate3d(0, calc(var(--exit, 0) * -3.5rem), 0);
+}
+
+.theRow,
+.nameRow {
+  display: flex;
+  align-items: flex-start;
+}
+
+.nameRow {
+  margin-top: 0.05em;
+}
+
+.line {
+  display: inline-flex;
+}
+
+.clip {
+  display: inline-block;
+  overflow: hidden;
+  padding-block: 0.02em;
+  margin-block: -0.02em;
+}
+
+.glyph {
+  position: relative;
+  display: inline-block;
+  animation: rise 1200ms var(--ease-cinematic) calc(140ms + var(--i) * 52ms) both;
+}
+
+/*
+ * Once, as the letters land: a line of light crosses the metal, left to right.
+ * A layer over the letter, not a fill of it: the title stays real painted text,
+ * which is also what the browser measures as the page's first content.
+ */
+@supports (background-clip: text) or (-webkit-background-clip: text) {
+  .glyph::after {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        104deg,
+        transparent 42%,
+        var(--color-gold-pale) 50%,
+        transparent 58%
+      )
+      100% 0 / 340% 100%;
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: sheen 900ms cubic-bezier(0.45, 0, 0.55, 1) calc(1050ms + var(--i) * 55ms) both;
+    content: attr(data-letter);
+  }
+}
+
+/* Narrow: the 26 closes the gold rule, its label sits under the rule's start. */
+.edition {
+  position: absolute;
+  right: 0;
+  left: 0;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-top: calc(var(--t) * 0.78);
+  font-family: var(--font-display);
+  line-height: 1;
+}
+
+.editionNumber {
+  display: inline-flex;
+  color: var(--color-gold);
+  font-size: clamp(2.75rem, 15cqw, 6rem);
+  font-variation-settings: "opsz" 30;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+/* The counter: each wheel is one digit tall and shows the 26 through a window. */
+.wheel {
+  display: inline-grid;
+  height: 1em;
+  overflow: visible clip;
+  line-height: 1;
+}
+
+.wheelSizer {
+  grid-area: 1 / 1;
+  visibility: hidden;
+}
+
+.reel {
+  grid-area: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: translateY(calc(var(--digit) * -1em));
+  animation: roll 1250ms var(--ease-cinematic) calc(820ms + var(--wheel) * 70ms) both;
+}
+
+.reel > span {
+  height: 1em;
+}
+
+.editionLabel {
+  padding-bottom: 0.2rem;
+  color: var(--color-silver-200);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  animation: resolve 800ms var(--ease-cinematic) 1250ms both;
+}
+
+/* The datum line: the first thing drawn, and the gear's rim rolled out along it. */
+.rule {
+  position: relative;
+  z-index: 1;
+  grid-area: rule;
+  height: 7px;
+  margin-top: clamp(0.75rem, 2.4cqw, 1.25rem);
+  margin-right: clamp(5rem, 25cqw, 9rem);
+  color: var(--color-gold);
+}
+
+.ruleLine {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1px;
+  background: currentColor;
+  transform-origin: 0 50%;
+  animation: draw 1300ms cubic-bezier(0.65, 0, 0.35, 1) 60ms both;
+}
+
+.rack {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.rackTick {
+  animation: tick-on 320ms ease calc(240ms + var(--tick) * 30ms) both;
+}
+
+/* Emblem ------------------------------------------------------------------ */
+
+.emblem {
+  grid-area: emblem;
+  display: grid;
+  place-items: center;
+  padding-block: clamp(4rem, 17cqw, 6rem) clamp(1.75rem, 8cqw, 3rem);
+}
+
+.emblemFrame {
+  position: relative;
+  width: min(84cqw, 46svh, 34rem);
+  aspect-ratio: 2048 / 2041;
+  transform: translate3d(0, calc(var(--exit, 0) * 1.25rem), 0);
+}
+
+/*
+ * The gear's two centre lines, in the chain line (long dash, short dash) that a
+ * technical drawing reserves for axes. They cross at the measured centre of the
+ * artwork. The horizontal one runs off the page; the vertical one stays close to
+ * the gear on a narrow screen and, on a wide one, drops to the datum line under the
+ * title, which ties the emblem to the type it stands on.
+ */
+.axisX,
+.axisY {
+  --chain: rgb(226 214 186 / 26%);
+  position: absolute;
+  z-index: -1;
+}
+
+.axisX {
+  top: 48.8%;
+  left: 50.11%;
+  width: 240vw;
+  height: 1px;
+  margin-left: -120vw;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--chain) 0 26px,
+    transparent 26px 32px,
+    var(--chain) 32px 36px,
+    transparent 36px 42px
+  );
+  animation: axis-x 1200ms cubic-bezier(0.65, 0, 0.35, 1) 300ms both;
+}
+
+.axisY {
+  top: -9%;
+  left: 50.11%;
+  width: 1px;
+  height: 116%;
+  background: repeating-linear-gradient(
+    180deg,
+    var(--chain) 0 26px,
+    transparent 26px 32px,
+    var(--chain) 32px 36px,
+    transparent 36px 42px
+  );
+  animation: axis-y 1200ms cubic-bezier(0.65, 0, 0.35, 1) 300ms both;
+}
+
+.pitch {
+  color: var(--color-gold-pale);
+}
+
+.pitchCircle {
+  opacity: 0.42;
+  stroke-dasharray: 1;
+  animation: compass var(--pen-turn) linear var(--pen-start) both;
+}
+
+/* Backlit first, then lit: the mark ends exactly as supplied, with no filter left. */
+.emblemIris {
+  position: absolute;
+  inset: 0;
+  animation: emerge 1500ms var(--ease-cinematic) calc(var(--pen-start) + 360ms) both;
+}
+
+.ring {
+  color: var(--color-gold-pale);
+}
+
+/* One tooth set for every 40 ms of the compass turn. */
+.tick {
+  animation: tick 300ms ease-out calc(var(--pen-start) + var(--tick) * 40ms) both;
+}
+
+/* Foot -------------------------------------------------------------------- */
+
+.foot {
+  grid-area: foot;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.statement {
+  animation: resolve 1000ms var(--ease-cinematic) 1250ms both;
+}
+
+.lockup > li {
+  animation: resolve 1000ms var(--ease-cinematic) 1400ms both;
+}
+
+.lockup > li + li {
+  animation-delay: 1500ms;
+}
+
+.tagline {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.625rem, 7.4cqw, 2.25rem);
+  font-style: italic;
+  font-variation-settings: "opsz" 14;
+  font-weight: 500;
+  line-height: 1.14;
+  text-wrap: balance;
+}
+
+.archive {
+  margin: 0.75rem 0 0;
+  color: var(--color-silver-200);
+}
+
+/* Tablet: the foot becomes one row so the whole hero fits the first screen. */
+@media (min-width: 640px) and (max-width: 1023px) {
+  .emblemFrame {
+    width: min(84cqw, 38svh, 34rem);
+  }
+
+  .foot {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+
+  .tagline {
+    font-size: clamp(1.5rem, 3.6cqw, 1.875rem);
+  }
+}
+
+/* Wide: type across the bottom, emblem beside THE. ------------------------ */
+
+@media (min-width: 1024px) {
+  .light {
+    --light-x: 77%;
+    --light-y: 34%;
+  }
+
+  .stage {
+    grid-template-rows: minmax(11rem, 1fr) auto auto auto;
+    grid-template-areas:
+      "emblem"
+      "title"
+      "rule"
+      "foot";
+    height: 100svh;
+  }
+
+  .title,
+  .emblem {
+    --t: min(calc(100cqw / 5.42), 27svh);
+    /* From the foot of the emblem down the two lines of type to the datum line. */
+    --axis-drop: calc(var(--t) * 0.94 + 1.6rem + clamp(1.25rem, 3svh, 2rem));
+  }
+
+  /* At full scale the title can take far finer strokes. */
+  .title {
+    align-self: end;
+    font-variation-settings: "opsz" 72;
+  }
+
+  .edition {
+    position: static;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.4rem;
+    margin-top: 0.03em;
+    margin-left: 0.14em;
+  }
+
+  .editionNumber {
+    font-size: calc(var(--t) * 0.46);
+    line-height: 0.82;
+  }
+
+  .rule {
+    margin-top: clamp(1.25rem, 3svh, 2rem);
+    margin-right: 0;
+  }
+
+  .axisY {
+    top: -100svh;
+    height: calc(100svh + 100% + var(--axis-drop));
+  }
+
+  /* Reaches down past the top of the title row, into the band beside THE. */
+  .emblem {
+    display: block;
+    justify-self: end;
+    height: calc(100% + var(--t) * 0.8);
+    min-height: 0;
+    padding: 1.1rem 1.25rem 1.6rem 0;
+  }
+
+  .emblemFrame {
+    width: auto;
+    height: 100%;
+    max-height: 38rem;
+  }
+
+  .foot {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 3rem;
+    padding-top: clamp(1rem, 2.2svh, 1.5rem);
+  }
+
+  .statement {
+    flex: none;
+  }
+
+  .tagline {
+    font-size: clamp(1.5rem, 2.1cqw, 2rem);
+    text-wrap: nowrap;
+  }
+
+  .archive {
+    margin: 0.375rem 0 0;
+  }
+}
+
+@media (min-width: 1280px) {
+  .statement {
+    display: flex;
+    align-items: baseline;
+    gap: 2rem;
+  }
+
+  .archive {
+    margin: 0;
+  }
+}
+
+/*
+ * The hero stays in place while the next chapter slides over it. Only when the
+ * viewport is tall enough to show all of it: otherwise its foot would be lost.
+ */
+@media (min-width: 1024px) and (min-height: 640px) {
+  .hero {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+  }
+}
+
+/* Sequence ---------------------------------------------------------------- */
+
+@keyframes rise {
+  from {
+    transform: translateY(112%);
+  }
+}
+
+@keyframes sheen {
+  from {
+    background-position: 0% 0;
+  }
+  to {
+    background-position: 100% 0;
+  }
+}
+
+@keyframes roll {
+  from {
+    opacity: 0;
+    transform: translateY(0);
+  }
+  12% {
+    opacity: 1;
+  }
+}
+
+@keyframes draw {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+@keyframes tick-on {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes axis-x {
+  from {
+    clip-path: inset(0 50% 0 50%);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes axis-y {
+  from {
+    clip-path: inset(50% 0 50% 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes compass {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/*
+ * The widening clip does more than shape the reveal. It makes the browser paint the
+ * emblem as it appears; with only opacity and filter the compositor shows it and
+ * the browser reports it as painted seconds later, once hydration repaints it.
+ */
+@keyframes emerge {
+  from {
+    opacity: 0;
+    clip-path: circle(46% at 50.1% 48.8%);
+    filter: brightness(0.2);
+    transform: scale(0.975);
+  }
+  45% {
+    opacity: 1;
+  }
+  to {
+    opacity: 1;
+    clip-path: circle(74% at 50.1% 48.8%);
+    filter: brightness(1);
+    transform: none;
+  }
+}
+
+@keyframes tick {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.8;
+  }
+}
+
+@keyframes light-up {
+  from {
+    opacity: 0.25;
+  }
+}
+
+@keyframes resolve {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .light,
+  .glyph,
+  .reel,
+  .editionLabel,
+  .ruleLine,
+  .rackTick,
+  .axisX,
+  .axisY,
+  .pitchCircle,
+  .emblemIris,
+  .tick,
+  .statement,
+  .lockup > li {
+    animation: none;
+  }
+
+  /* Both: WebKit keeps a hidden pseudo-element's animation running. */
+  .glyph::after {
+    display: none;
+    animation: none;
+  }
+
+  .tick {
+    opacity: 0.8;
+  }
+
+  .title,
+  .emblemFrame {
+    transform: none;
+  }
+
+  .stage {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
