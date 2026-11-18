@@ -14,7 +14,7 @@ function resolveSiteUrl() {
   return "http://localhost:3000";
 }
 
-const title = `${site.name} — ${site.archiveLabel}`;
+const title = `${site.name}`;
 
 export const siteMetadata: Metadata = {
   metadataBase: new URL(resolveSiteUrl()),
